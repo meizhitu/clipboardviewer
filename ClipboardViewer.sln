@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClipboardViewer", "ClipboardViewer\ClipboardViewer.vcproj", "{88E7DD67-F6F2-4E6E-9E87-C25E52743D84}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wtl", "wtl", "{856E85BD-2B7C-4429-B8B3-0914661F9839}"
+	ProjectSection(SolutionItems) = preProject
+		ClipboardViewer\wtl\Include\atlapp.h = ClipboardViewer\wtl\Include\atlapp.h
+		ClipboardViewer\wtl\Include\atlcrack.h = ClipboardViewer\wtl\Include\atlcrack.h
+		ClipboardViewer\wtl\Include\atlctrls.h = ClipboardViewer\wtl\Include\atlctrls.h
+		ClipboardViewer\wtl\Include\atlctrlw.h = ClipboardViewer\wtl\Include\atlctrlw.h
+		ClipboardViewer\wtl\Include\atlctrlx.h = ClipboardViewer\wtl\Include\atlctrlx.h
+		ClipboardViewer\wtl\Include\atlddx.h = ClipboardViewer\wtl\Include\atlddx.h
+		ClipboardViewer\wtl\Include\atldlgs.h = ClipboardViewer\wtl\Include\atldlgs.h
+		ClipboardViewer\wtl\Include\atldwm.h = ClipboardViewer\wtl\Include\atldwm.h
+		ClipboardViewer\wtl\Include\atlfind.h = ClipboardViewer\wtl\Include\atlfind.h
+		ClipboardViewer\wtl\Include\atlframe.h = ClipboardViewer\wtl\Include\atlframe.h
+		ClipboardViewer\wtl\Include\atlgdi.h = ClipboardViewer\wtl\Include\atlgdi.h
+		ClipboardViewer\wtl\Include\atlmisc.h = ClipboardViewer\wtl\Include\atlmisc.h
+		ClipboardViewer\wtl\Include\atlprint.h = ClipboardViewer\wtl\Include\atlprint.h
+		ClipboardViewer\wtl\Include\atlres.h = ClipboardViewer\wtl\Include\atlres.h
+		ClipboardViewer\wtl\Include\atlresce.h = ClipboardViewer\wtl\Include\atlresce.h
+		ClipboardViewer\wtl\Include\atlscrl.h = ClipboardViewer\wtl\Include\atlscrl.h
+		ClipboardViewer\wtl\Include\atlsplit.h = ClipboardViewer\wtl\Include\atlsplit.h
+		ClipboardViewer\wtl\Include\atltheme.h = ClipboardViewer\wtl\Include\atltheme.h
+		ClipboardViewer\wtl\Include\atluser.h = ClipboardViewer\wtl\Include\atluser.h
+		ClipboardViewer\wtl\Include\atlwince.h = ClipboardViewer\wtl\Include\atlwince.h
+		ClipboardViewer\wtl\Include\atlwinx.h = ClipboardViewer\wtl\Include\atlwinx.h
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88E7DD67-F6F2-4E6E-9E87-C25E52743D84}.Debug|Win32.ActiveCfg = Debug|Win32
+		{88E7DD67-F6F2-4E6E-9E87-C25E52743D84}.Debug|Win32.Build.0 = Debug|Win32
+		{88E7DD67-F6F2-4E6E-9E87-C25E52743D84}.Release|Win32.ActiveCfg = Release|Win32
+		{88E7DD67-F6F2-4E6E-9E87-C25E52743D84}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
