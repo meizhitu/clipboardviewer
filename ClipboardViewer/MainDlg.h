@@ -14,6 +14,7 @@ private:
 	CRichEditCtrl m_richEditText;
 	CRichEditCtrl m_richEditHTML;
 	CRichEditCtrl m_richEditFormat;
+	CRichEditCtrl m_richEditRaw;
 	CPictureBox m_pictureBox;
 public:
 	enum { IDD = IDD_MAINDLG };
@@ -54,7 +55,8 @@ public:
 		int top = 50;
 		int w = (rc.Width()-30)/3;
 		int h = 300;
-		m_richEditFormat.MoveWindow(CRect(15,top,rc.Width()-15,top+150));
+		m_richEditFormat.MoveWindow(CRect(15,top,rc.Width()/2-15,top+150));
+		m_richEditRaw.MoveWindow(CRect(rc.Width()/2-15,top,rc.Width()-15,top+150));
 		m_richEditText.MoveWindow(CRect(15,top+150,15+w,rc.bottom-15));
 		m_richEditHTML.MoveWindow(CRect(15+w,top+150,2*w+15,rc.bottom-15));
 		m_pictureBox.MoveWindow(CRect(2*w+15,top+150,3*w+15,rc.bottom-15));
@@ -63,6 +65,7 @@ public:
 
 	LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 	{
+		SetDlgItemInt(IDC_EDITFormat,1);
 		CRect rc;
 		GetClientRect(&rc);
 		int top = 50;
@@ -70,9 +73,15 @@ public:
 		int h = 300;
 		m_richEditFormat.Create(
 			m_hWnd,
-			CRect(15,top,rc.Width()-15,top+150),
+			CRect(15,top,rc.Width()/2-15,top+150),
 			L"",
-			WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VSCROLL | ES_LEFT | ES_MULTILINE | ES_WANTRETURN ,
+			WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VSCROLL | ES_LEFT | ES_MULTILINE | ES_WANTRETURN|WS_DLGFRAME ,
+			0);
+		m_richEditRaw.Create(
+			m_hWnd,
+			CRect(rc.Width()/2-15,top,rc.Width()-15,top+150),
+			L"",
+			WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_VSCROLL | ES_LEFT | ES_MULTILINE | ES_WANTRETURN|WS_DLGFRAME ,
 			0);
 		m_richEditText.Create(
 			m_hWnd,

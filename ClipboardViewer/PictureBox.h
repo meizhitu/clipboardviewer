@@ -122,7 +122,7 @@ namespace WTL
 			GetScrollOffset(ptScrollOffset);
 			rcClient.OffsetRect(ptScrollOffset);
 
-			mDC.FillRect(&rcClient, AtlGetStockBrush(WHITE_BRUSH));
+			mDC.FillRect(&rcClient, AtlGetStockBrush(LTGRAY_BRUSH));
 
 			if (m_hBitmap != NULL)
 			{

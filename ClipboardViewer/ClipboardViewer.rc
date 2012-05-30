@@ -26,13 +26,14 @@ LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 // Dialog
 //
 
-IDD_MAINDLG DIALOGEX 0, 0, 355, 273
+IDD_MAINDLG DIALOGEX 0, 0, 385, 290
 STYLE DS_SETFONT | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "ClipboardViewer"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "查看剪贴板",IDOK,12,7,64,14
-    LTEXT           "从左到右分别是CF_UNICODETEXT,CF_HTML，CF_BITMAP的剪贴板结果",IDC_STATIC,80,10,228,8
+    LTEXT           "从左到右分别是CF_UNICODETEXT,CF_HTML，CF_BITMAP的剪贴板结果",IDC_STATIC,80,10,252,8
+    EDITTEXT        IDC_EDITFormat,334,7,44,14,ES_AUTOHSCROLL | ES_NUMBER
 END
 
 
@@ -47,9 +48,9 @@ BEGIN
     IDD_MAINDLG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 348
+        RIGHTMARGIN, 378
         TOPMARGIN, 7
-        BOTTOMMARGIN, 266
+        BOTTOMMARGIN, 283
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -100,42 +101,6 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\ClipboardViewer.ico"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Dialog
-//
-
-IDD_ABOUTBOX DIALOG  0, 0, 187, 102
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "About"
-FONT 8, "MS Sans Serif"
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,130,81,50,14
-    CTEXT           "ClipboardViewer Application v1.0\n\n(c) Copyright 2012",IDC_STATIC,25,57,78,32
-    ICON            IDR_MAINFRAME,IDC_STATIC,55,26,18,20
-    GROUPBOX        "",IDC_STATIC,7,7,115,88
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
-BEGIN
-    IDD_ABOUTBOX, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 180
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 95
-    END
-END
-#endif    // APSTUDIO_INVOKED
-
 
 /////////////////////////////////////////////////////////////////////////////
 //

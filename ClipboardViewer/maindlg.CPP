@@ -1,10 +1,25 @@
 #include "StdAfx.h"
 #include "MainDlg.h"
 
-TCHAR *StrClipboardFormats[17]={_T("cf_text"),_T("cf_bitmap"),_T("cf_metafilepict"),_T("cf_sylk"),
-_T("cf_dif"),_T("cf_tiff"),_T("cf_oemtext"),_T("cf_dib"),_T("cf_palette"),
-_T("cf_pendata"),_T("cf_riff"),_T("cf_wave"),_T("cf_unicodetext"),
-_T("cf_enhmetafile"),_T("cf_hdrop"),_T("cf_locale"),_T("cf_max")};
+TCHAR *StrClipboardFormats[17]={
+	_T("CF_TEXT"),
+	_T("CF_BITMAP"),
+	_T("CF_METAFILEPICT"),
+	_T("CF_SYLK"),
+	_T("CF_DIF"),
+	_T("CF_TIFF"),
+	_T("CF_OEMTEXT"),
+	_T("CF_DIB"),
+	_T("CF_PALETTE"),
+	_T("CF_PENDATA"),
+	_T("CF_RIFF"),
+	_T("CF_WAVE"),
+	_T("CF_UNICODETEXT"),
+	_T("CF_ENHMETAFILE"),
+	_T("CF_HDROP"),
+	_T("CF_LOCALE"),
+	_T("CF_DIBV5")
+};
 
 CString GetClipFormatName(int uFormat,int htmlFormat)
 {
@@ -18,6 +33,12 @@ CString GetClipFormatName(int uFormat,int htmlFormat)
 	}
 	else
 	{
+		TCHAR szFormatName[256];
+		if (GetClipboardFormatName(uFormat, szFormatName, 
+			sizeof(szFormatName))) 
+		{
+			return szFormatName; 
+		}
 		return _T("NONE");
 	}
 }
@@ -27,6 +48,7 @@ LRESULT CMainDlg::OnBnClickedOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 	m_richEditFormat.SetWindowText(_T(""));
 	m_richEditText.SetWindowText(_T(""));
 	m_richEditHTML.SetWindowText(_T(""));
+	m_richEditRaw.SetWindowText(_T(""));
 	m_pictureBox.SetHBitmap(NULL);
 	if (::OpenClipboard(NULL))
 	{
@@ -36,29 +58,17 @@ LRESULT CMainDlg::OnBnClickedOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 		while(uFormat = ::EnumClipboardFormats(uFormat))
 		{
 			CString formatText;
-			formatText.Format(_T("%d:%s\t"),uFormat,GetClipFormatName(uFormat,htmlFormat));
+			formatText.Format(_T("%d:%s\n"),uFormat,GetClipFormatName(uFormat,htmlFormat));
 			m_richEditFormat.AppendText(formatText);
 			if (htmlFormat == uFormat)
 			{
 				if (::IsClipboardFormatAvailable(uFormat))
 				{
 					HANDLE handle = ::GetClipboardData(uFormat);
-					char* data = (char*)GlobalLock(handle);
+					CHAR* data = (CHAR*)GlobalLock(handle);
 					CString unicodeData(data);
 					m_richEditHTML.AppendText(unicodeData);
 				}
-				continue;
-			}
-			else if (uFormat == CF_TEXT)
-			{
-				/*if (::IsClipboardFormatAvailable(uFormat))
-				{
-					HANDLE handle = ::GetClipboardData(uFormat);
-					char* data = (char*)GlobalLock(handle);
-					CString unicodeData(data);
-					m_richEditText.AppendText(unicodeData);
-				}
-				continue;*/
 			}
 			else if (uFormat == CF_UNICODETEXT)
 			{
@@ -68,7 +78,6 @@ LRESULT CMainDlg::OnBnClickedOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 					TCHAR* data = (TCHAR*)GlobalLock(handle);
 					m_richEditText.AppendText(data);
 				}
-				continue;
 			}
 			else if (uFormat == CF_BITMAP)
 			{
@@ -76,7 +85,24 @@ LRESULT CMainDlg::OnBnClickedOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 				{
 					HBITMAP hBitmap = (HBITMAP)GetClipboardData(uFormat);
 					m_pictureBox.SetHBitmap(hBitmap);
-					continue;
+				}
+			}
+		}
+		int selectFormat = GetDlgItemInt(IDC_EDITFormat);
+		if (selectFormat > 0)
+		{
+			if (::IsClipboardFormatAvailable(selectFormat))
+			{
+				HANDLE handle = ::GetClipboardData(selectFormat);
+				if (selectFormat == CF_UNICODETEXT)
+				{
+					m_richEditRaw.AppendText((TCHAR*)GlobalLock(handle));
+				}
+				else
+				{
+					char* data = (char*)GlobalLock(handle);
+					CString unicodeData(data);
+					m_richEditRaw.AppendText(unicodeData);
 				}
 			}
 		}

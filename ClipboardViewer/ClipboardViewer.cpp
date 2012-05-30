@@ -9,7 +9,6 @@
 
 #include "resource.h"
 
-#include "aboutdlg.h"
 #include "MainDlg.h"
 
 CAppModule _Module;

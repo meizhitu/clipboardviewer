@@ -223,10 +223,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc"
 			>
 			<File
-				RelativePath=".\AboutDlg.h"
-				>
-			</File>
-			<File
 				RelativePath=".\MainDlg.h"
 				>
 			</File>
