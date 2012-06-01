@@ -43,6 +43,18 @@ CString GetClipFormatName(int uFormat,int htmlFormat)
 	}
 }
 
+CString ConvertUtf8(char* strUtf8)
+{
+	int len = MultiByteToWideChar( CP_UTF8, 0, strUtf8, -1, NULL, 0 );
+	if ( len == 0 )
+		return CString();
+	CString ret;
+	LPWSTR lpBuffer = ret.GetBuffer( len );
+	MultiByteToWideChar( CP_UTF8, 0, strUtf8, -1, lpBuffer, len );
+	ret.ReleaseBuffer();
+	return ret;
+}
+
 LRESULT CMainDlg::OnBnClickedOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
 	m_richEditFormat.SetWindowText(_T(""));
@@ -66,7 +78,8 @@ LRESULT CMainDlg::OnBnClickedOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 				{
 					HANDLE handle = ::GetClipboardData(uFormat);
 					CHAR* data = (CHAR*)GlobalLock(handle);
-					CString unicodeData(data);
+
+					CString unicodeData = ConvertUtf8(data);
 					m_richEditHTML.AppendText(unicodeData);
 				}
 			}
@@ -102,6 +115,10 @@ LRESULT CMainDlg::OnBnClickedOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 				{
 					char* data = (char*)GlobalLock(handle);
 					CString unicodeData(data);
+					if (IsDlgButtonChecked(IDC_CHECKUnicode))
+					{
+						unicodeData= ConvertUtf8(data);
+					}
 					m_richEditRaw.AppendText(unicodeData);
 				}
 			}

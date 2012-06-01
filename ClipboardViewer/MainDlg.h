@@ -8,7 +8,7 @@
 #include <windowsx.h>
 
 class CMainDlg : public CDialogImpl<CMainDlg>, public CUpdateUI<CMainDlg>,
-		public CMessageFilter, public CIdleHandler
+	public CMessageFilter, public CIdleHandler
 {
 private:
 	CRichEditCtrl m_richEditText;
@@ -16,6 +16,7 @@ private:
 	CRichEditCtrl m_richEditFormat;
 	CRichEditCtrl m_richEditRaw;
 	CPictureBox m_pictureBox;
+	CFont m_font;
 public:
 	enum { IDD = IDD_MAINDLG };
 
@@ -41,10 +42,10 @@ public:
 		COMMAND_HANDLER(IDOK, BN_CLICKED, OnBnClickedOk)
 	END_MSG_MAP()
 
-// Handler prototypes (uncomment arguments if needed):
-//	LRESULT MessageHandler(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
-//	LRESULT CommandHandler(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-//	LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
+	// Handler prototypes (uncomment arguments if needed):
+	//	LRESULT MessageHandler(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+	//	LRESULT CommandHandler(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+	//	LRESULT NotifyHandler(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
 
 	LRESULT OnSize(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& /*bHandled*/)
 	{
@@ -65,6 +66,7 @@ public:
 
 	LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 	{
+		
 		SetDlgItemInt(IDC_EDITFormat,1);
 		CRect rc;
 		GetClientRect(&rc);
@@ -101,6 +103,17 @@ public:
 			L"",
 			WS_CHILD | WS_VISIBLE | WS_TABSTOP |WS_VSCROLL|WS_DLGFRAME,
 			0);
+		HFONT hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT); 
+		m_font.Attach(hFont); 
+		//m_font.CreatePointFont(90,_T("Î¢ÈíÑÅºÚ"));
+		m_richEditHTML.SetFont(hFont);
+		m_richEditFormat.SetFont(hFont);
+		m_richEditFormat.SetBackgroundColor(RGB(239,234,50));
+		m_richEditRaw.SetBackgroundColor(RGB(255,209,75));
+		m_richEditText.SetBackgroundColor(RGB(255,173,50));
+		m_richEditHTML.SetBackgroundColor(RGB(189,135,50));
+		m_richEditRaw.SetFont(hFont);
+		m_richEditText.SetFont(hFont);
 		// center the dialog on the screen
 		CenterWindow();
 
