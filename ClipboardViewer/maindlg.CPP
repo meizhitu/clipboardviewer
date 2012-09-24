@@ -81,6 +81,7 @@ LRESULT CMainDlg::OnBnClickedOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 
 					CString unicodeData = ConvertUtf8(data);
 					m_richEditHTML.AppendText(unicodeData);
+					GlobalUnlock(handle);
 				}
 			}
 			else if (uFormat == CF_UNICODETEXT)
@@ -90,6 +91,8 @@ LRESULT CMainDlg::OnBnClickedOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 					HANDLE handle = ::GetClipboardData(uFormat);
 					TCHAR* data = (TCHAR*)GlobalLock(handle);
 					m_richEditText.AppendText(data);
+					GlobalUnlock(handle);
+
 				}
 			}
 			else if (uFormat == CF_BITMAP)
@@ -106,23 +109,82 @@ LRESULT CMainDlg::OnBnClickedOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 		{
 			if (::IsClipboardFormatAvailable(selectFormat))
 			{
-				HANDLE handle = ::GetClipboardData(selectFormat);
-				if (selectFormat == CF_UNICODETEXT)
+				HGLOBAL hMem = ::GetClipboardData(selectFormat);
+				if (IsDlgButtonChecked(IDC_CHECKBinary))
 				{
-					m_richEditRaw.AppendText((TCHAR*)GlobalLock(handle));
+					LPVOID pvdata = GlobalLock(hMem);
+					DWORD uDataSize = GlobalSize(hMem);
+					BYTE* pbyData  = new BYTE [ uDataSize ];
+					// Copy the data to the newly-allocated memory.
+					CopyMemory ( pbyData, pvdata, uDataSize );
+					UINT        uOffset;
+					UINT        uBytesInThisLine;
+					UINT        uLineOffset;
+
+					CString     sLine (_T(' '), 64);            // preallocate enough space for a line
+					CString     sWork;
+					for ( uOffset = 0; uOffset < uDataSize; uOffset += 8 )
+					{
+						// How many bytes will be in the next line?  Max of 8.
+						uBytesInThisLine = uDataSize - uOffset;
+						if ( uBytesInThisLine > 8 )
+						{
+							uBytesInThisLine = 8;
+						}
+						// First part of the line - the starting offset.
+						sLine.Format ( _T("%08X  "), uOffset );
+						// Now loop through the data and add on the hex value of each byte.
+						for ( uLineOffset = 0; uLineOffset < uBytesInThisLine; uLineOffset++ )
+						{
+							sWork.Format ( _T("%02X "), pbyData[uOffset + uLineOffset] );
+							sLine += sWork;
+							if ( 3 == uLineOffset || 7 == uLineOffset )
+								sLine += ' ';
+						}
+
+						// If there were less than 8 bytes in this line, pad the line with
+						// spaces so the ASCII representation will be in the right column.
+						if ( uBytesInThisLine < 8 )
+						{
+							sLine += CString(_T(' '), 1 + 3 * (8 - uBytesInThisLine) );
+
+							if ( uBytesInThisLine < 4 )
+								sLine += _T(' ');
+						}
+
+						// Add on the ASCII representation
+						for ( uLineOffset = 0; uLineOffset < uBytesInThisLine; uLineOffset++ )
+						{
+							// If the next byte isn't printable, show a period instead.
+							if ( _istprint ( pbyData[uOffset + uLineOffset] ))
+								sLine += (TCHAR) pbyData[uOffset + uLineOffset];
+							else
+								sLine += _T('.');
+						}
+						sLine += _T('\n');
+						m_richEditRaw.AppendText(sLine);
+					}
+				}
+				else if (selectFormat == CF_UNICODETEXT)
+				{
+					m_richEditRaw.AppendText((TCHAR*)GlobalLock(hMem));
 				}
 				else
 				{
-					char* data = (char*)GlobalLock(handle);
+					char* data = (char*)GlobalLock(hMem);
 					CString unicodeData(data);
 					if (IsDlgButtonChecked(IDC_CHECKUnicode))
 					{
-						unicodeData= ConvertUtf8(data);
+						unicodeData= (TCHAR*)data;//ConvertUtf8(data);
 					}
 					m_richEditRaw.AppendText(unicodeData);
 				}
+				
+				GlobalUnlock(hMem);
 			}
 		}
+
+		
 		CloseClipboard();
 	}
 	return 0;

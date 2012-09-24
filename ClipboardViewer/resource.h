@@ -6,7 +6,9 @@
 #define IDD_MAINDLG                     129
 #define IDC_EDITFormat                  1000
 #define IDC_CHECK1                      1001
-#define IDC_CHECKUnicode                1001
+#define IDC_CHECKBinary                 1001
+#define IDC_CHECKBinary2                1002
+#define IDC_CHECKUnicode                1002
 
 // Next default values for new objects
 // 
