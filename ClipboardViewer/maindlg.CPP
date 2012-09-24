@@ -156,8 +156,18 @@ LRESULT CMainDlg::OnBnClickedOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 						for ( uLineOffset = 0; uLineOffset < uBytesInThisLine; uLineOffset++ )
 						{
 							// If the next byte isn't printable, show a period instead.
-							if ( _istprint ( pbyData[uOffset + uLineOffset] ))
+							if ( isprint ( pbyData[uOffset + uLineOffset] ))
 								sLine += (TCHAR) pbyData[uOffset + uLineOffset];
+							else if (uLineOffset+1 < uBytesInThisLine)
+							{
+								BYTE b[3];
+								b[0] = pbyData[uOffset + uLineOffset];
+								b[1] = pbyData[uOffset + uLineOffset+1];
+								b[2] = 0;
+								CString chinese(b);
+								uLineOffset++;
+								sLine += chinese;
+							}
 							else
 								sLine += _T('.');
 						}
